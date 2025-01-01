@@ -5,7 +5,7 @@ REPO_DIR="build/bedrock-access-gateway"
 mkdir -p build
 
 rm -rf app/api
-rm -f app/requirements.txt
+rm -f layer/requirements.txt
 
 # Check if the repository is already cloned
 if [ -d "$REPO_DIR" ]; then
@@ -23,7 +23,7 @@ fi
 cp -r $REPO_DIR/src/api app/api
 
 # Remove "Manum" from requirements.txt, as LWA is used instead.
-grep -v "mangum" $REPO_DIR/src/requirements.txt > app/requirements.txt
+grep -v "mangum" $REPO_DIR/src/requirements.txt > layer/requirements.txt
 grep -v "Mangum" $REPO_DIR/src/api/app.py > app/api/app.py
 
 # Check if "--no-embeddings" is present in the bash command
@@ -41,9 +41,9 @@ if [[ $* == *--no-embeddings* ]]; then
     sed -i.bak '/embeddings.router/d' app/api/app.py && rm app/api/app.py.bak
 
     # app/requirements.txt
-    sed -i.bak '/^tiktoken/d' app/requirements.txt && rm app/requirements.txt.bak
-    sed -i.bak '/^numpy/d' app/requirements.txt && rm app/requirements.txt.bak
+    sed -i.bak '/^tiktoken/d' layer/requirements.txt && rm layer/requirements.txt.bak
+    sed -i.bak '/^numpy/d' layer/requirements.txt && rm layer/requirements.txt.bak
 fi
 
 # Pydantic need to be >= 2.10.4 in order to fix a installation issue
-sed -i.bak 's/pydantic==.*/pydantic>=2.10.4/g' app/requirements.txt && rm app/requirements.txt.bak
+sed -i.bak 's/pydantic==.*/pydantic>=2.10.4/g' layer/requirements.txt && rm layer/requirements.txt.bak

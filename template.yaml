@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Bedrock Access Gateway (OpenAI API Schema) with FastAPI on AWS Lambda,
+  exposed as a public API with AWS Lambda Function URL.
+
+Parameters:
+  ApiKey:
+    Type: String
+    Description: "API Key to be used in the Authorization header"
+    MinLength: 1
+    # NoEcho: true
+
+Globals:
+  Function:
+    MemorySize: 512
+    Timeout: 150
+
+Resources:
+  BedrockAccessGatewayLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layer/
+      CompatibleRuntimes:
+        - python3.13
+      CompatibleArchitectures:
+        - x86_64
+    Metadata:
+      BuildMethod: python3.13
+
+  BedrockAccessGatewayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/
+      Handler: run.sh
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          API_KEY: !Ref ApiKey
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
+          AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          # Align with `app/api/app.py` in the `uvicorn.run` line
+          AWS_LWA_PORT: 8000
+          # DEBUG: 'true'
+          DEFAULT_MODEL: 'amazon.nova-micro-v1:0'
+          ENABLE_CROSS_REGION_INFERENCE: 'true'
+      Layers:
+        - !Ref BedrockAccessGatewayLayer
+        - !Sub arn:aws:lambda:${AWS::Region}:753240598075:layer:LambdaAdapterLayerX86:23
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: RESPONSE_STREAM
+      Policies:
+      - Statement:
+        - Action:
+            - bedrock:ListFoundationModels
+            - bedrock:ListInferenceProfiles
+          Effect: Allow
+          Resource: "*"
+        - Action:
+            - bedrock:InvokeModel
+            - bedrock:InvokeModelWithResponseStream
+          Effect: Allow
+          Resource:
+            - arn:aws:bedrock:*::foundation-model/*
+            - arn:aws:bedrock:*:*:inference-profile/*
+
+Outputs:
+  FunctionUrl:
+    Description: "Function URL for FastAPI function"
+    Value: !GetAtt BedrockAccessGatewayFunctionUrl.FunctionUrl
+  Function:
+    Description: "FastAPI Lambda Function ARN"
+    Value: !GetAtt BedrockAccessGatewayFunction.Arn

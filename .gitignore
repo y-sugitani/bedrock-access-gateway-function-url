@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+samconfig.toml
+
+app/api
+app/requirements.txt

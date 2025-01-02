@@ -22,18 +22,18 @@ Resources:
     Properties:
       ContentUri: layer/
       CompatibleRuntimes:
-        - python3.13
+        - python3.12
       CompatibleArchitectures:
         - x86_64
     Metadata:
-      BuildMethod: python3.13
+      BuildMethod: python3.12
 
   BedrockAccessGatewayFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: app/
       Handler: run.sh
-      Runtime: python3.13
+      Runtime: python3.12
       Architectures:
         - x86_64
       Environment:

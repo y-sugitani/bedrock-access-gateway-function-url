@@ -2,11 +2,15 @@
 
 This repo is combining the great work of the original implementation of [bedrock-access-gateway](https://github.com/aws-samples/bedrock-access-gateway/) with [aws-lambda-web-adapter](https://github.com/awslabs/aws-lambda-web-adapter) so that one can deploy an OpenAI API compatible endpoint on AWS Lambda with Function URL and streaming enabled.
 
-This solution is more cost effective than the original `bedrock-access-gateway` solution as it removes the need of fixed cost components (Application Load Balancer and the optional Fargate container) and the need of a VPC. So that one can use it in a fully pay-as-you-go model.
+This solution is more cost effective than the original `bedrock-access-gateway` solution as it removes the need of fixed cost components (Application Load Balancer and the optional Fargate container, >US$16/month) and the need of a VPC. So that one can use it in a fully pay-as-you-go model.
 
 It also removes the usage of a Lambda Docker runtime to avoid the use of a ECR repository in order to reduce Lambda cold start times.
 
 ## Deployment
+
+Under both deployment options, `--no-embeddings` is optional. If you want to speed up the inference as well as reduce the Lambda Layer, you can exclude the embeddings from the deployment package.
+
+### Local Build
 
 Make sure you have `sam` and Docker installed.
 
@@ -18,7 +22,28 @@ sam build --use-container
 sam deploy --guided
 ```
 
-`--no-embeddings` is optional. If you want to speed up the inference as well as reduce the Lambda Layer, you can exclude the embeddings from the deployment package.
+### AWS CloudShell
+
+If you are using AWS CloudShell VPC environment, make sure it has access to the internet.
+
+```shell
+# Dependency installation
+sudo yum update -y
+sudo yum install -y python3.12 python3.12-pip
+(
+    cd /tmp && \
+    curl -L https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip -o aws-sam-cli-linux-x86_64.zip && \
+    unzip aws-sam-cli-linux-x86_64.zip -q -d sam-installation && \
+    sudo ./sam-installation/install
+)
+
+git clone --depth=1 https://github.com/gabrielkoo/bedrock-access-gateway-function-url
+cd bedrock-access-gateway-function-url
+
+./prepare_source.sh  # [--no-embeddings]
+sam build
+sam deploy --guided
+```
 
 ## Test
 

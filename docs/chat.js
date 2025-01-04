@@ -6,13 +6,15 @@ const optionKeys = [
   'modelId',
   'stream',
   'maxTokens',
+  'temperature',
 ];
 const optionDefaultValues = {
   endpoint: 'http://localhost:11434/v1',
   apiKey: '',
   modelId: 'llama3.2:1b',
   stream: true,
-  maxTokens: 512,
+  maxTokens: 1024,
+  temperature: 0.1,
 };
 
 const getOptions = () => {
@@ -46,10 +48,15 @@ listModelsButton.addEventListener('click', async () => {
   const resposneData = await response.json();
   const modelIds = resposneData.data.map(({ id }) => id);
 
+  const { modelId: currentModelId } = getOptions();
+
   modelIds.forEach((modelId) => {
     const option = document.createElement('option');
     option.value = modelId;
     option.innerText = modelId;
+    if (modelId === currentModelId) {
+      option.selected = true;
+    }
     select.appendChild(option);
   });
 
@@ -95,16 +102,21 @@ const renderChat = () => {
     }
   }
 
-  const { endpoint, apiKey, modelId, stream, maxTokens } = getOptions();
+  const { endpoint, apiKey, modelId, stream, maxTokens, temperature } = getOptions();
 
   chat.connect = { stream };
+  chat.images = true;
+  chat.gifs = true;
+  chat.camera = true;
+  chat.dragAndDrop = true;
   chat.directConnection = {
     openAI: {
       key: apiKey || PLACEHOLDER_KEY,
       chat: {
         max_tokens: maxTokens,
         model: modelId,
-        system_prompt: 'You are very helpful assistant bot.'
+        system_prompt: 'You are very helpful assistant bot.',
+        temperature: temperature,
       }
     }
   };
@@ -132,7 +144,7 @@ const renderChat = () => {
 
   const setChatHeight = () => {
     const isFullScreenMode = document.body.classList.contains('full-screen');
-    chat.style.height = `calc(100vh - ${isFullScreenMode ? 24 : 84}px - ${chat.offsetTop}px)`;
+    chat.style.height = `calc(100vh - ${(isFullScreenMode ? 24 : 96) + chat.offsetTop}px)`;
     if (isFullScreenMode) {
       chat.style.width = 'calc(100% - 2px)';
       chat.style.height = 'calc(100% - 2px)';
@@ -153,8 +165,15 @@ const renderChat = () => {
 
 const setOptions = (newOptions, reRender = true) => {
   optionKeys.forEach((key) => {
-    const value = newOptions[key];
-    document.getElementById(key).value = value;
+    let value = newOptions[key];
+    if (!['maxTokens', 'temperature'].includes(key)) {
+      document.getElementById(key).value = value;
+    } else {
+      if (value === 0) value = '0.0';
+      document
+        .getElementById(key)
+        .querySelector(`option[value="${value}"]`).selected = true;
+    }
   });
   localStorage.setItem('options', JSON.stringify(newOptions));
   if (reRender) renderChat();
@@ -167,8 +186,8 @@ optionKeys.forEach((key) => {
     let { value } = input;
     if (key === 'stream') {
       value = input.checked;
-    } else if (key === 'maxTokens') {
-      value = parseInt(value, 10);
+    } else if (['maxTokens', 'temperature'].includes(key)) {
+      value = +value;
     }
     options[key] = value;
     setOptions(options);
@@ -189,6 +208,7 @@ const initOptions = () => {
 initOptions();
 
 document.getElementById('reset').addEventListener('click', () => {
+  localStorage.removeItem('options');
   setOptions(optionDefaultValues);
 });
 document.getElementById('clear').addEventListener('click', () => {

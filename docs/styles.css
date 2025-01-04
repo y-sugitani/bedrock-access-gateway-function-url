@@ -2,9 +2,12 @@
     text-align: center;
 }
 
+h1 {
+    font-size: 1.5em;
+}
+
 .input-container {
     display: flex;
-    gap: 10px;
     padding-bottom: 12px;
     justify-content: center;
 }
@@ -12,21 +15,21 @@
 .input-container input,
 .input-container select {
     width: calc(100% - 20px);
-    padding: 10px;
+    padding: 8px;
     font-family: monospace;
 }
 
 .option-container {
     display: flex;
-    gap: 10px;
-    padding-bottom: 12px;
+    gap: 8px;
+    padding: 4px;
     justify-content: center;
 }
 
 .chat-container {
     display: flex;
     justify-content: center;
-    padding: 12px;
+    padding: 4px;
     min-height: 240px;
     min-width: 320px;
 }
@@ -56,4 +59,17 @@ body.full-screen {
     height: 100vh;
     width: 100vw;
     padding: 0
+}
+
+.gear-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+.gear-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
 }

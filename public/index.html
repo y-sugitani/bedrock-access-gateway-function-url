@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test UI for Bedrock Access Gateway</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="https://unpkg.com/deep-chat@2.1.1/dist/deepChat.bundle.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Test UI for Bedrock Access Gateway Function URL</h1>
+
+  <div class="input-container">
+    <div>
+      <label for="endpoint">Endpoint</label>
+      <input type="text" name="endpoint" id="endpoint" placeholder="Without trailing slash">
+    </div>
+    <div>
+      <label for="apiKey">API Key</label>
+      <input type="password" name="apiKey" id="apiKey" placeholder="Enter your API key here">
+    </div>
+    <div>
+      <label for="modelId">
+        Model ID
+        <a href="#" id="listModels">
+          [List]
+        </a>
+      </label>
+      <input type="text" name="modelId" id="modelId">
+    </div>
+  </div>
+
+  <div id="chat-container" class="chat-container"></div>
+
+  <div class="option-container">
+    <div>
+      <label for="stream">Stream</label>
+      <input type="checkbox" name="stream" id="stream" checked>
+    </div>
+    |
+    <div>
+      <label for="maxTokens" id="maxTokensLabel">Max Tokens</label>
+      <input type="number" name="maxTokens" id="maxTokens" min="128" max="4096" value="512">
+    </div>
+    |
+    <div>
+      <button id="reset" name="reset">Reset</button>
+    </div>
+    |
+    <div>
+      <button id="clear" name="clear">Clear Chat</button>
+    </div>
+  </div>
+
+  <footer>
+    This UI is built on the open source project <a href="https://deepchat.dev/" target="_blank">
+      DeepChat
+    </a>
+  </footer>
+</div>
+
+<script type="module" src="./chat.js"></script>
+
+</body>
+</html>

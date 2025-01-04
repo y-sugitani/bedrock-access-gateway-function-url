@@ -1,0 +1,42 @@
+.container {
+    text-align: center;
+}
+
+.input-container {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 12px;
+    justify-content: center;
+}
+
+.input-container input,
+.input-container select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-family: monospace;
+}
+
+.option-container {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 12px;
+    justify-content: center;
+}
+
+.chat-container {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    min-height: 240px;
+    min-width: 320px;
+}
+
+@media screen and (max-width: 600px) {
+    .input-container {
+        flex-direction: column;
+    }
+
+    .chat-container {
+        padding: 12px 0;
+    }
+}

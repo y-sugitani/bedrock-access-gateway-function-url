@@ -1,0 +1,9 @@
+{
+    "short_name": "Bedrock UI",
+    "name": "UI for Bedrock Access Gateway",
+    "start_url": "/bedrock-access-gateway-function-url/",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "orientation": "natural"
+}

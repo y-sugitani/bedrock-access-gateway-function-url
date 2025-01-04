@@ -166,13 +166,17 @@ const renderChat = () => {
 const setOptions = (newOptions, reRender = true) => {
   optionKeys.forEach((key) => {
     let value = newOptions[key];
-    if (!['maxTokens', 'temperature'].includes(key)) {
-      document.getElementById(key).value = value;
-    } else {
-      if (value === 0) value = '0.0';
-      document
-        .getElementById(key)
-        .querySelector(`option[value="${value}"]`).selected = true;
+    try {
+      if (!['maxTokens', 'temperature'].includes(key)) {
+        document.getElementById(key).value = value;
+      } else {
+        if (value === 0) value = '0.0';
+        document
+          .getElementById(key)
+          .querySelector(`option[value="${value}"]`).selected = true;
+      }
+    } catch (error) {
+      console.error(`Failed to set value for ${key}=${value}`, error);
     }
   });
   localStorage.setItem('options', JSON.stringify(newOptions));
@@ -217,7 +221,7 @@ document.getElementById('clear').addEventListener('click', () => {
   renderChat();
 });
 
-document.getElementById('gear-button').addEventListener('click', function() {
+document.getElementById('full-screen-button').addEventListener('click', function() {
   document.body.classList.toggle('full-screen');
   renderChat();
 });

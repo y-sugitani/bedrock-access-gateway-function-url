@@ -61,15 +61,22 @@ body.full-screen {
     padding: 0
 }
 
-.gear-container {
+.full-screen-container {
     position: fixed;
     top: 10px;
     right: 10px;
 }
 
-.gear-button {
+.full-screen-button {
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
+}
+
+body:not(.full-screen) #exit-full-screen-icon {
+    display: none;
+}
+.full-screen #full-screen-icon {
+    display: none;
 }

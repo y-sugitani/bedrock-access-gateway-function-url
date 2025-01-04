@@ -72,6 +72,28 @@ const renderChat = () => {
 
   const chat = document.createElement('deep-chat');
   chat.style = 'width: 100%; max-width: 640px;';
+  chat.avatars = {
+    "default": {"styles": {"position": "left"}}
+  };
+  chat.messageStyles = {
+    "default": {
+      "shared": {
+        "bubble": {
+          "maxWidth": "100%", "backgroundColor": "unset", "marginTop": "10px", "marginBottom": "10px"
+        }
+      },
+      "user": {
+        "bubble": {
+          "marginLeft": "0px", "color": "black"
+        }
+      },
+      "ai": {
+        "outerContainer": {
+          "backgroundColor": "rgba(247,247,248)", "borderTop": "1px solid rgba(0,0,0,.1)", "borderBottom": "1px solid rgba(0,0,0,.1)"
+        }
+      }
+    }
+  }
 
   const { endpoint, apiKey, modelId, stream, maxTokens } = getOptions();
 
@@ -109,7 +131,13 @@ const renderChat = () => {
   };
 
   const setChatHeight = () => {
-    chat.style.height = `calc(100vh - 84px - ${chat.offsetTop}px)`;
+    const isFullScreenMode = document.body.classList.contains('full-screen');
+    chat.style.height = `calc(100vh - ${isFullScreenMode ? 24 : 84}px - ${chat.offsetTop}px)`;
+    if (isFullScreenMode) {
+      chat.style.width = 'calc(100% - 2px)';
+      chat.style.height = 'calc(100% - 2px)';
+      chat.style.maxWidth = '960px';
+    }
   }
 
   chat.onComponentRender = setChatHeight;
@@ -166,6 +194,11 @@ document.getElementById('reset').addEventListener('click', () => {
 document.getElementById('clear').addEventListener('click', () => {
   localStorage.setItem('history', '[]');
   window.chat.clearMessages();
+  renderChat();
+});
+
+document.getElementById('gear-button').addEventListener('click', function() {
+  document.body.classList.toggle('full-screen');
   renderChat();
 });
 

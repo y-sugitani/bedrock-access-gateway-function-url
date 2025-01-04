@@ -40,3 +40,20 @@
         padding: 12px 0;
     }
 }
+
+body.full-screen {
+    margin: 0;
+}
+
+.full-screen h1,
+.full-screen footer,
+.full-screen .input-container,
+.full-screen .option-container {
+    display: none;
+}
+
+.full-screen .chat-container {
+    height: 100vh;
+    width: 100vw;
+    padding: 0
+}

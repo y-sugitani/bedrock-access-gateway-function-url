@@ -56,6 +56,8 @@ sam deploy --guided
 
 ## Test
 
+Enter your credentials on my static hosted UI <https://gabrielkoo.github.io/bedrock-access-gateway-function-url/>, or just run the code below in your shell:
+
 ```shell
 curl "${FUNCTION_URL}api/v1/chat/completions" \
      -H "Authorization: Bearer $API_KEY" \

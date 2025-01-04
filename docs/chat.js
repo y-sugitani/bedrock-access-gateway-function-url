@@ -80,23 +80,33 @@ const renderChat = () => {
   const chat = document.createElement('deep-chat');
   chat.style = 'width: 100%; max-width: 640px;';
   chat.avatars = {
-    "default": {"styles": {"position": "left"}}
+    'default': {
+      'styles': {
+        'position': 'left'
+      }
+    }
   };
   chat.messageStyles = {
-    "default": {
-      "shared": {
-        "bubble": {
-          "maxWidth": "100%", "backgroundColor": "unset", "marginTop": "10px", "marginBottom": "10px"
+    'default': {
+      'shared': {
+        'bubble': {
+          'maxWidth': '100%',
+          'backgroundColor': 'unset',
+          'marginTop': '10px',
+          'marginBottom': '10px'
         }
       },
-      "user": {
-        "bubble": {
-          "marginLeft": "0px", "color": "black"
+      'user': {
+        'bubble': {
+          'marginLeft': '0px',
+          'color': 'black'
         }
       },
-      "ai": {
-        "outerContainer": {
-          "backgroundColor": "rgba(247,247,248)", "borderTop": "1px solid rgba(0,0,0,.1)", "borderBottom": "1px solid rgba(0,0,0,.1)"
+      'ai': {
+        'outerContainer': {
+          'backgroundColor': 'rgba(247,247,248)',
+          'borderTop': '1px solid rgba(0,0,0,.1)',
+          'borderBottom': '1px solid rgba(0,0,0,.1)',
         }
       }
     }
@@ -107,7 +117,14 @@ const renderChat = () => {
   chat.connect = { stream };
   chat.images = true;
   chat.gifs = true;
-  chat.camera = true;
+  chat.camera = {
+    'files': {
+      'format': 'png',
+      'dimensions': {'width': 480, 'height': 640},
+      'maxNumberOfFiles': 3,
+      'acceptedFormats': '.jpg,.png'
+    }
+  };
   chat.dragAndDrop = true;
   chat.directConnection = {
     openAI: {

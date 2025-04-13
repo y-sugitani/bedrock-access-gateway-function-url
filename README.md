@@ -83,3 +83,7 @@ curl "${FUNCTION_URL}api/v1/chat/completions" \
 ```
 
 <!-- GitAds-Verify: DE976CZWRV2LRG5CLLOO1PYCEQQZ734H -->
+
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=gabrielkoo/bedrock-access-gateway-function-url@github)](https://gitads.dev/v1/ad-track?source=gabrielkoo/bedrock-access-gateway-function-url@github)
+

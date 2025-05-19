@@ -17,14 +17,14 @@ if [ -d "$REPO_DIR" ]; then
     )
 else
     echo "Cloning aws-samples/bedrock-access-gateway repository"
-    git clone --depth 1 https://github.com/aws-samples/bedrock-access-gateway $REPO_DIR
+    git clone --depth 1 https://github.com/y-sugitani/bedrock-access-gateway.git $REPO_DIR
 fi
 
 cp -r $REPO_DIR/src/api app/api
 
 # Remove "Manum" from requirements.txt, as LWA is used instead.
-grep -v "mangum" $REPO_DIR/src/requirements.txt > layer/requirements.txt
-grep -v "Mangum" $REPO_DIR/src/api/app.py > app/api/app.py
+grep -v "mangum" $REPO_DIR/src/requirements.txt >layer/requirements.txt
+grep -v "Mangum" $REPO_DIR/src/api/app.py >app/api/app.py
 
 # Check if "--no-embeddings" is present in the bash command
 if [[ $* == *--no-embeddings* ]]; then
